@@ -16,16 +16,9 @@ end_date <- as.Date("2024-09-30")
 date_sequence <- seq.Date(start_date, end_date, by = "day")
 date <- sample(date_sequence, num_observations, replace = TRUE)
 
-# Simulate Longitudes for Canada
-min_longitude <- 53
-max_longitude <- 141
-longitude <- runif(num_observations, min = min_longitude, max = max_longitude)
-
-# Simulate Latitudes for Canada
-min_latitude <- 42
-max_latitude <- 83
-latitude <- runif(num_observations, min = min_latitude, max = max_latitude)
-
+# Simulate Location for Canada
+longitude = runif(122, min = -140, max = -50)
+latitude = runif(num_observations, min = 42, max = 85)
 # Simulate Hail Size
 mean_value <- 7.5
 sd_value <- 6
