@@ -1,16 +1,31 @@
-# Load the required libraries
+# Load required libraries
 library(shiny)
 library(leaflet)
+library(tidyverse)
+
+data <- read_csv("data.csv")
+
+# Sample Data Preparation (You should replace this with your actual data)
+data <- data.frame(
+  date = seq(as.Date("2024-06-01"), as.Date("2024-09-30"), by = "day")
+)
 
 # Define UI for application
 ui <- fluidPage(
-  titlePanel("Interactive Map of Canada"),
+  titlePanel("Some Title"),
+  
   sidebarLayout(
     sidebarPanel(
-      # You can add input controls here if needed
+      sliderInput("dateRange", "Select Date Range:",
+                  min = min(data$date), max = max(data$date),
+                  value = c(min(data$date), max(data$date)), 
+                  timeFormat = "%b %d, %Y", 
+                  step = 1, 
+                  animate = TRUE)
     ),
+    
     mainPanel(
-      leafletOutput("map")
+      leafletOutput("map")  # Output for the map
     )
   )
 )
@@ -19,11 +34,13 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   output$map <- renderLeaflet({
     leaflet() %>%
-      addTiles() %>%  # Add default OpenStreetMap tiles
-      setView(lng = -106.3468, lat = 56.1304, zoom = 4) %>%  # Center the map on Canada
-      addMarkers(lng = -106.3468, lat = 56.1304, popup = "Canada")  # Add a marker for Canada
+      addTiles() %>%
+      setView(lng = -106.3468, lat = 56.1304, zoom = 4)
+
   })
 }
 
-# Run the application
+# Run the application 
 shinyApp(ui = ui, server = server)
+
+
