@@ -79,7 +79,7 @@ server <- function(input, output, session) {
         radius = sqrt(filtered_data$size),  # Adjust marker size based on 'size'
         color = "red",
         fillOpacity = 0.7,
-        popup = ~paste("Date:", date, "<br>Size:", size,"<br><img src='", 
+        popup = ~paste("Date:", date, "<br>Size (cm):", size,"<br><img src='", 
                        image_url, "' width='150' height='150'>")
       )
   })
