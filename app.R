@@ -3,8 +3,6 @@ library(shiny)
 library(leaflet)
 library(tidyverse)
 
-library(tidyverse)
-
 # Define the date range
 start_date <- as.Date("2024-06-01")
 end_date <- as.Date("2024-09-30")
@@ -12,19 +10,22 @@ date_range <- seq(start_date, end_date, by = "day")
 
 # Generate 700 random dates within the range
 set.seed(123)  # For reproducibility
-random_dates <- sample(date_range, size = 700, replace = TRUE)
+random_dates <- sample(date_range, size = 100, replace = TRUE)
 
 # Create a tibble with data points for each random date
 data <- tibble(
   date = random_dates,
-  longitude = runif(700, min = -140, max = -50),  # Random longitudes within Canadian range
-  latitude = runif(700, min = 42, max = 85),      # Random latitudes within Canadian range
-  size = sample(1:15, 700, replace = TRUE)        # Random size values
+  longitude = rnorm(100, mean = -115, sd = 2),# Random longitudes within Canadian range
+  latitude = rnorm(100, mean = 55, sd = 2),      # Random latitudes within Canadian range
+  size = sample(5:15, 100, replace = TRUE)        # Random size values
 )
+
+data <- data %>%
+  mutate(image_url = paste0("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyoUo7VVYaVX2l8eo20n8uiViKFtb-R-DQww&s", size))
 
 # Define UI for application
 ui <- fluidPage(
-  titlePanel("Interactive Map"),
+  titlePanel("Interactive Hail Map"),
   
   sidebarLayout(
     sidebarPanel(
@@ -55,9 +56,10 @@ server <- function(input, output, session) {
       addCircleMarkers(
         ~longitude, ~latitude, 
         radius = sqrt(filtered_data$size),  # Adjust marker size based on 'size'
-        color = "blue",
+        color = "red",
         fillOpacity = 0.7,
-        popup = ~paste("Date:", date, "<br>Size:", size)
+        popup = ~paste("Date:", date, "<br>Size:", size,"<br><img src='", 
+                       image_url, "' width='150' height='150'>")
       )
   })
 }
